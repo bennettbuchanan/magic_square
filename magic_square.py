@@ -1,4 +1,3 @@
-
 def check_magic(n, vals):
     """Determine if a square of size n is magic.
 
@@ -6,37 +5,36 @@ def check_magic(n, vals):
     n -- The dimension of the square.
     vals -- The coordinates of the square and the value at that coordinate.
     """
-    list = [[], [], [], [], []]
+    if len([i[1] for i in vals]) > len(set([i[1] for i in vals])):
+        return False
+
+    final = []
+    crosses = [[], []]
 
     for i in range(n):
+        rows_cols = [[], []]
         for v in vals:
             if v[0][0] == i:
-                list[0].append(v)
+                rows_cols[0].append(v)
             if v[0][1] == i:
-                list[1].append(v)
+                rows_cols[1].append(v)
             if v[0][0] == i and v[0][1] == i:
-                list[2].append(v)
+                crosses[0].append(v)
             if v[0][0] == i and v[0][1] == (n - 1) - i:
-                list[3].append(v)
+                crosses[1].append(v)
 
-        list[4].append(sum([list[0][i][1] for i in range(n)]))
-        list[4].append(sum([list[1][i][1] for i in range(n)]))
-    list[4].append(sum([list[2][i][1] for i in range(n)]))
-    list[4].append(sum([list[3][i][1] for i in range(n)]))
-
-    return check_equality(list[4])
-
-
-def check_equality(list):
-    """Check that all integers in a list are equal.
-
-    Keyword arguments:
-    list -- A list of integers.
-    """
-    for i in list:
-        if i != list[0]:
+        if i == 0:
+            check = sum([rows_cols[0][i][1] for i in range(n)])
+        elif check != sum([rows_cols[0][i][1] for i in range(n)]):
             return False
-
+        if check != sum([rows_cols[0][i][1] for i in range(n)]):
+            return False
+        if check != sum([rows_cols[1][i][1] for i in range(n)]):
+            return False
+    if check != sum([crosses[0][i][1] for i in range(n)]):
+        return False
+    if check != sum([crosses[1][i][1] for i in range(n)]):
+        return False
     return True
 
 """Dimension of square."""

@@ -1,49 +1,32 @@
-def check_magic(n, vals):
-    """Determine if a square of size n is magic.
+def check_magic(matrix):
+    """Determine whether a given matrix is a magic 3x3 square.
 
     Keyword arguments:
-    n -- The dimension of the square.
-    vals -- The coordinates of the square and the value at that coordinate.
+    matrix -- The 3x3 matrix of integers.
     """
-    if len([i[1] for i in vals]) > len(set([i[1] for i in vals])):
+    elements = [j for i in matrix for j in i]
+    if len(elements) > len(set(elements)):
         return False
 
-    final = []
-    crosses = [[], []]
+    cross = [[], []]
 
-    for i in range(n):
-        rows_cols = [[], []]
-        for v in vals:
-            if v[0][0] == i:
-                rows_cols[0].append(v)
-            if v[0][1] == i:
-                rows_cols[1].append(v)
-            if v[0][0] == i and v[0][1] == i:
-                crosses[0].append(v)
-            if v[0][0] == i and v[0][1] == (n - 1) - i:
-                crosses[1].append(v)
+    for i in range(len(matrix)):
+        matrix_col = []
+
+        for row in matrix:
+            matrix_col.append(row[i])
+            cross[0].append(matrix[i][i])
+            cross[1].append(matrix[(len(matrix) - 1) - i][i])
 
         if i == 0:
-            check = sum([rows_cols[0][i][1] for i in range(n)])
-        elif check != sum([rows_cols[0][i][1] for i in range(n)]):
+            check = sum(row)
+        if check != sum(row) or check != sum(matrix_col):
             return False
-        if check != sum([rows_cols[0][i][1] for i in range(n)]):
-            return False
-        if check != sum([rows_cols[1][i][1] for i in range(n)]):
-            return False
-    if check != sum([crosses[0][i][1] for i in range(n)]):
-        return False
-    if check != sum([crosses[1][i][1] for i in range(n)]):
+    if check != sum(set(cross[0])) or check != sum(set(cross[1])):
         return False
     return True
 
-"""Dimension of square."""
-n = 3
+"""The matrix for a proper magic 3x3 square."""
+magic_matrix = [[8, 1, 6], [3, 5, 7], [4, 9, 2]]
 
-"""Create the array of coordinate tuples."""
-coord = [(x, y) for x in range(n) for y in range(n)]
-
-"""The array for a proper magic 3x3 square."""
-magic = [8, 1, 6, 3, 5, 7, 4, 9, 2]
-
-print check_magic(n, zip(coord, magic))
+print check_magic(magic_matrix)
